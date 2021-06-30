@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     private lateinit var sensorManager: SensorManager
     private var mSensor: Sensor? = null
-    private val gravity = FloatArray(3)
+    private val gravity = floatArrayOf(0.0f, 9.8f, 0.0f)
     private val linear_acceleration = FloatArray(3)
     private lateinit var textViewX: TextView
     private lateinit var textViewY: TextView
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
         if(y > 0.2 || y < -0.2) {
             textViewY.text = "%.3f".format(y)
-            if(y > 0.5){
+            if(y < -0.5){
                 textViewCL.text = "EN CAIDA LIBRE"
             } else {
                 textViewCL.text = ""
