@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     private lateinit var sensorManager: SensorManager
     private var mSensor: Sensor? = null
-    private val gravity = floatArrayOf(0.0f, 9.8f, 0.0f)
+    private val gravity = floatArrayOf(0f, 0f, 0f)
     private val linear_acceleration = FloatArray(3)
     private lateinit var textViewX: TextView
     private lateinit var textViewY: TextView
@@ -37,40 +37,20 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        val alpha: Float = 0.8f
 
-        gravity[0] = alpha * gravity[0] + (1 - alpha) * event!!.values[0]
-        gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1]
-        gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2]
+        val x = event!!.values[0]
+        val y = event.values[1]
+        val z = event.values[2]
 
-        linear_acceleration[0] = event.values[0] - gravity[0]
-        linear_acceleration[1] = event.values[1] - gravity[1]
-        linear_acceleration[2] = event.values[2] - gravity[2]
+        textViewX.text = "%.3f".format(x)
+        textViewY.text = "%.3f".format(y)
 
-        val x = linear_acceleration[0]
-        val y = linear_acceleration[1]
-        val z = linear_acceleration[2]
-
-        if(x > 0.2 || x < -0.2) {
-            textViewX.text = "%.3f".format(x)
+        if(y < -0.45 || y > 0.45){
+            textViewCL.text = "EN CAIDA LIBRE"
         } else {
-            textViewX.text = "0.0"
+            textViewCL.text = ""
         }
-        if(y > 0.2 || y < -0.2) {
-            textViewY.text = "%.3f".format(y)
-            if(y < -0.5){
-                textViewCL.text = "EN CAIDA LIBRE"
-            } else {
-                textViewCL.text = ""
-            }
-        }else {
-            textViewY.text = "0.0"
-        }
-        if(z > 0.2 || z < -0.2) {
-            textViewZ.text = "%.3f".format(z)
-        }else {
-            textViewZ.text = "0.0"
-        }
+        textViewZ.text = "%.3f".format(z)
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
